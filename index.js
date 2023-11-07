@@ -43,18 +43,31 @@ async function run() {
       res.send(result);
     });
 
+    //find data by email
+
+    app.get("/manageFood", async (req, res) => {
+      let query = {};
+      if (req.query.email) {
+        query = { email: req.query.email };
+      }
+      console.log({"query":query});
+      const result = await foodCollection.find(query).toArray();
+      console.log({"result":result});
+      res.send(result);
+    });
+
     //food add
-    app.post("/foods", async (req, res) => {
+    app.post("/add-food", async (req, res) => {
       const addFood = req.body;
-      console.log(addFood);
-      const result = await foodCollection.insertOne(foods);
+      // console.log(addFood);
+      const result = await foodCollection.insertOne(addFood);
       res.send(result);
     });
 
     //food-request
     app.post("/request/:id", async (req, res) => {
       const requestFood = req.body;
-      console.log(requestFood);
+      // console.log(requestFood);
       const result = await foodRequestCollection.insertOne(requestFood);
       res.send(result);
     });
