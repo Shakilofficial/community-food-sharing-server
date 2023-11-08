@@ -43,19 +43,6 @@ async function run() {
       res.send(result);
     });
 
-    //find data by email
-
-    app.get("/manageFood", async (req, res) => {
-      let query = {};
-      if (req.query.email) {
-        query = { email: req.query.email };
-      }
-      // console.log({"query":query});
-      const result = await foodCollection.find(query).toArray();
-      // console.log({"result":result});
-      res.send(result);
-    });
-
     //food add
     app.post("/add-food", async (req, res) => {
       const addFood = req.body;
@@ -98,6 +85,11 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/food-requests", async (req, res) => {
+      const result = await foodRequestCollection.find().toArray();
+      res.send(result);
+    });
+
     app.get("/food-requests/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
@@ -109,11 +101,14 @@ async function run() {
     app.patch("/food-requests/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
-      const newStatus = req.body.status; 
+      const newStatus = req.body.status;
       const updateStatus = {
         $set: { status: newStatus },
       };
-      const result = await foodRequestCollection.updateOne(filter, updateStatus);
+      const result = await foodRequestCollection.updateOne(
+        filter,
+        updateStatus
+      );
       console.log(result);
       res.send(result);
     });
