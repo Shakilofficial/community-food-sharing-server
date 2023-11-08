@@ -46,7 +46,7 @@ async function run() {
     //food add
     app.post("/add-food", async (req, res) => {
       const addFood = req.body;
-      // console.log(addFood);
+
       const result = await foodCollection.insertOne(addFood);
       res.send(result);
     });
@@ -54,7 +54,7 @@ async function run() {
     //food-request
     app.post("/request/:id", async (req, res) => {
       const requestFood = req.body;
-      // console.log(requestFood);
+
       const result = await foodRequestCollection.insertOne(requestFood);
       res.send(result);
     });
@@ -109,7 +109,6 @@ async function run() {
         filter,
         updateStatus
       );
-      console.log(result);
       res.send(result);
     });
 
