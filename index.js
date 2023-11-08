@@ -50,9 +50,9 @@ async function run() {
       if (req.query.email) {
         query = { email: req.query.email };
       }
-      console.log({"query":query});
+      // console.log({"query":query});
       const result = await foodCollection.find(query).toArray();
-      console.log({"result":result});
+      // console.log({"result":result});
       res.send(result);
     });
 
@@ -69,6 +69,39 @@ async function run() {
       const requestFood = req.body;
       // console.log(requestFood);
       const result = await foodRequestCollection.insertOne(requestFood);
+      res.send(result);
+    });
+
+    //update food
+    app.patch("/manage-my-foods/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updateFood = req.body;
+      const foodProduct = {
+        $set: {
+          foodName: updateFood.foodName,
+          foodImage: updateFood.foodImage,
+          foodQuantity: updateFood.foodQuantity,
+          pickupLocation: updateFood.pickupLocation,
+          expiredDate: updateFood.expiredDate,
+          additionalNotes: updateFood.additionalNotes,
+        },
+      };
+
+      const result = await foodCollection.updateOne(
+        filter,
+        foodProduct,
+        updateFood
+      );
+
+      res.send(result);
+    });
+
+    //Delete
+    app.delete("/foods/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await foodCollection.deleteOne(query);
       res.send(result);
     });
 
