@@ -46,7 +46,7 @@ async function run() {
     //food add
     app.post("/add-food", async (req, res) => {
       const addFood = req.body;
-
+      // console.log(addFood);
       const result = await foodCollection.insertOne(addFood);
       res.send(result);
     });
